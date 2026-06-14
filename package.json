@@ -4,9 +4,11 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "vite --host 0.0.0.0 --port 5173",
-    "dev:codex": "vite --host 0.0.0.0 --port 5173",
-    "dev:claude": "vite --host 0.0.0.0 --port 5174",
+    "dev": "vite --host 0.0.0.0 --port 5173 --strictPort",
+    "dev:codex": "vite --host 0.0.0.0 --port 5173 --strictPort",
+    "dev:claude": "vite --host 0.0.0.0 --port 5173 --strictPort",
+    "artifact:history": "git log --oneline --decorate --max-count=20",
+    "artifact:status": "git status --short --branch",
     "build": "vite build",
     "preview": "vite preview --host 0.0.0.0"
   },
