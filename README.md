@@ -9,7 +9,17 @@ npm install
 npm run dev
 ```
 
-Open the local URL printed by Vite, usually `http://localhost:5173`.
+Open `http://localhost:5173`.
+
+Use explicit ports when Codex and Claude Code are both running local servers:
+
+```bash
+npm run dev:codex
+npm run dev:claude
+```
+
+- Codex: `http://localhost:5173`
+- Claude Code: `http://localhost:5174`
 
 ## Collaboration workflow
 
