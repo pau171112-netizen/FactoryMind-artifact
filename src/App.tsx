@@ -260,9 +260,9 @@ const TOP_TABS = [
 
 /* ============ DECISION PACKETS ============ */
 const PACKETS = [
-  { id: 26, source: "monitoring", kind: "risk", title: "Cross-domain Monitoring Escalation — Cocoa + Port + Cover Breach", sub: "Agent-originated escalation package", tier: "Auto-promoted to orchestration", icon: Radio, accent: C.amber, date: "14 JUN",
+  { id: 26, source: "scenario", kind: "risk", title: "Cross-domain Monitoring Escalation — Cocoa + Port + Cover Breach", sub: "Agent-originated escalation package", tier: "Auto-promoted to orchestration", icon: Radio, accent: C.amber, date: "14 JUN",
     m: [["Signals used", "5"], ["Agents aligned", "4"], ["Escalated EVaR", "€2.8M"]], headline: "Escalated to Scenario Room" },
-  { id: 24, source: "scenario", kind: "risk", title: "Cocoa Supply Shock — Advance Purchase + Hedge", sub: "Executive S&OP action required", tier: "Operations Director (> €200k)", icon: AlertTriangle, accent: C.red, date: "15 JUN",
+  { id: 24, source: "monitoring", kind: "risk", title: "Cocoa Supply Shock — Advance Purchase + Hedge", sub: "Executive S&OP action required", tier: "Operations Director (> €200k)", icon: AlertTriangle, accent: C.red, date: "15 JUN",
     m: [["Current EVaR", "€2.8M"], ["After portfolio", "€1.2M"], ["Cost", "€230k"], ["ROI", "7×"]], headline: "−57% EVaR" },
   { id: 25, source: "planning", kind: "opportunity", title: "Buying Window — Cocoa P50 Below 90-Day Average", sub: "Monthly planning opportunity packet", tier: "Operations Lead (€50k–200k)", icon: Zap, accent: C.green, date: "16 JUN",
     m: [["Margin secured", "€140k"], ["Volume", "200 t"], ["Cost", "€55k"]], headline: "+€85k net value" },
@@ -6550,8 +6550,8 @@ export default function FactoryMindDemo() {
   }, []);
 
 
-  const approve = () => {
-    if (approved) return;
+  const approve = (force = false) => {
+    if (approved && force !== true) return;
     setApproved(true);
     showToast("Packet #24 approved · logged to immutable audit trail");
     const now = new Date();
@@ -6729,6 +6729,86 @@ export default function FactoryMindDemo() {
       return next;
     });
     showToast(`Scenario "${name}" deleted`);
+  };
+
+  const resetLiveEpisode = () => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+    setEpisode("idle");
+    setFeedOpen(false);
+    setPacketReady(false);
+    setApproved(false);
+    setApproved25(false);
+    setMonitoringDecision("pending");
+    setPacketStage("packets");
+    setPacketSourceFilter("scenario");
+    setPacketTimelineView("timeline");
+    setSelPacket(24);
+    setShowDiagrams(false);
+    setControlOpsView("signals");
+    setMapHot(false);
+    setMcBusy(false);
+    setSelectedScenarios(new Set(["preset:Cocoa Price Shock"]));
+    setActiveVars(Object.fromEntries(VARIABLES.map((v) => [v.id, DEFAULT_ACTIVE.includes(v.id)])));
+    setVarVals(Object.fromEntries(VARIABLES.map((v) => [v.id, v.id === "cocoa" ? 28 : 0])));
+    setSelectedActions(new Set());
+    setEvar(K.evar);
+    setEes(K.ees);
+    setScreen("dhc");
+    showToast("Demo reset · baseline restored");
+  };
+
+  const runLiveEpisode = () => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+    setEpisode("running");
+    setFeed([]);
+    setFeedOpen(true);
+    setPacketReady(false);
+    setApproved(false);
+    setMonitoringDecision("pending");
+    setPacketStage("packets");
+    setPacketSourceFilter("scenario");
+    setControlOpsView("signals");
+    setScreen("control");
+    setSelectedScenarios(new Set(["preset:Cocoa Price Shock"]));
+    setSelectedActions(new Set());
+    setEvar(K.evar);
+    setEes(K.ees);
+    showToast("Live episode started · signals entering agent feed");
+
+    const schedule = (delay, fn) => {
+      const t = setTimeout(fn, delay);
+      timers.current.push(t);
+    };
+    const emit = (delay, item) => schedule(delay, () => { pushFeed(item); setSecs(0); });
+
+    emit(150, { agent: "External Intelligence Agent", agentKey: "external", status: "Monitoring", conf: 88, evar: "+€1.45M", model: "ICE · ICCO", ts: "09:12", summary: "ICE cocoa +18% · z-score +2.3" });
+    emit(1150, { agent: "Procurement Agent", agentKey: "procurement", status: "Recommendation", conf: 84, evar: "+€0.42M", model: "Cover policy", ts: "09:13", summary: "Cover policy breached · 18d < 30d" });
+    emit(2050, { agent: "Logistics Agent", agentKey: "logistics", status: "Recommendation", conf: 79, evar: "+€0.18M", model: "PortWatch", ts: "09:13", summary: "Abidjan lead time +8d on 2 vessels" });
+    emit(3000, { agent: "Orchestrator", agentKey: "orchestrator", status: "Escalated", conf: 91, evar: "€2.8M", model: "Materiality gate", ts: "09:14", summary: "Cross-domain materiality confirmed" });
+    schedule(3150, () => { setMapHot(true); setControlOpsView("orchestrator"); showToast("Warning launched · Orchestrator validated materiality"); });
+    schedule(4300, () => { setScreen("dhc"); pushFeed({ agent: "Knowledge Graph", agentKey: "orchestrator", status: "Simulation Complete", conf: 89, evar: "updated", model: "Graph update", ts: "09:14", summary: "Cocoa → cover → inbound lane → margin path refreshed" }); showToast("Knowledge Graph updated · causal path illuminated"); });
+    schedule(5900, () => { setScreen("control"); setPacketReady(true); showToast("Control Center updated · escalated alert stream created"); });
+    schedule(7450, () => {
+      setScreen("scenario");
+      applyScenarioSet(new Set(["preset:Cocoa Price Shock"]));
+      showToast("Cocoa Price Shock scenario created · running deterministic Monte Carlo");
+    });
+    schedule(9350, () => {
+      openPacketView(24, "monitoring", "Decision Packet #24 generated from Cocoa Price Shock");
+      setShowDiagrams(true);
+    });
+    schedule(11750, () => {
+      approve(true);
+      showToast("Packet approved · impact updating in Value Center");
+    });
+    schedule(13650, () => {
+      setScreen("governance");
+      setFeedOpen(false);
+      setEpisode("complete");
+      showToast("Episode complete · Value Center updated");
+    });
   };
 
   const clockStr = (() => { const d = new Date(); return d.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }); })();
@@ -6935,7 +7015,7 @@ export default function FactoryMindDemo() {
               </div>
             </div>
             {packetReady || approved ? (
-              <div onClick={() => openPacketView(24, "scenario")} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 18px", cursor: "pointer", borderLeft: `4px solid ${approved ? C.green : C.core}` }}>
+              <div onClick={() => openPacketView(24, "monitoring")} style={{ display: "flex", alignItems: "center", gap: 14, padding: "14px 18px", cursor: "pointer", borderLeft: `4px solid ${approved ? C.green : C.core}` }}>
                 <FileCheck2 size={18} color={approved ? C.green : C.core} />
                 <div style={{ flex: 1 }}>
                   <div style={{ fontSize: 13.5, fontWeight: 700 }}>#24 — Cocoa supply shock: advance purchase + hedge</div>
@@ -7199,7 +7279,7 @@ export default function FactoryMindDemo() {
               {portfolio.list.length} action{portfolio.list.length === 1 ? "" : "s"} · cost <b style={{ color: C.ink, ...NUM }}>€{portfolio.cost}k</b> · residual EVaR <b style={{ color: C.green, ...NUM }}>€{portfolio.residual.toFixed(2)}M</b> · ROI <b style={{ color: C.deep, ...NUM }}>{portfolio.roi || "—"}{portfolio.roi ? "×" : ""}</b>
             </div>
             <div style={{ flex: 1 }} />
-            <button onClick={() => openPacketView(24, "scenario", "Scenario packet generated from the active mitigation portfolio")} disabled={portfolio.list.length === 0}
+            <button onClick={() => openPacketView(24, "monitoring", "Scenario packet generated from the active mitigation portfolio")} disabled={portfolio.list.length === 0}
               style={{ background: portfolio.list.length ? C.core : C.line, color: "#fff", border: "none", padding: "11px 20px", borderRadius: 8, fontSize: 13, fontWeight: 700, cursor: portfolio.list.length ? "pointer" : "default", fontFamily: FONT }}>
               Generate Decision Packet
             </button>
@@ -8491,7 +8571,7 @@ export default function FactoryMindDemo() {
         </div>
 
         {/* Challenge badge */}
-        <div style={{ margin: "0 10px 12px", borderRadius: 10, overflow: "hidden", position: "relative", background: "linear-gradient(135deg,#130830 0%,#2D0A55 60%,#4A0E86 100%)", border: "1px solid rgba(161,0,255,0.28)", boxShadow: "0 4px 18px rgba(100,0,200,0.18)" }}>
+        <div onClick={resetLiveEpisode} title="Reset live demo state" style={{ margin: "0 10px 12px", borderRadius: 10, overflow: "hidden", position: "relative", background: "linear-gradient(135deg,#130830 0%,#2D0A55 60%,#4A0E86 100%)", border: "1px solid rgba(161,0,255,0.28)", boxShadow: "0 4px 18px rgba(100,0,200,0.18)", cursor: "pointer" }}>
           <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none", opacity: 0.12 }} xmlns="http://www.w3.org/2000/svg">
             <defs><pattern id="cb_g" width="14" height="14" patternUnits="userSpaceOnUse"><path d="M 14 0 L 0 0 0 14" fill="none" stroke="#fff" strokeWidth="0.4"/></pattern></defs>
             <rect width="100%" height="100%" fill="url(#cb_g)"/>
@@ -8517,11 +8597,11 @@ export default function FactoryMindDemo() {
           <button onClick={() => setFeedOpen(!feedOpen)} style={{ display: "flex", alignItems: "center", gap: 7, background: C.bg, border: `1px solid ${C.line}`, color: C.ink, padding: "9px 14px", borderRadius: 10, fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: FONT }}>
             <Radio size={14} color={C.core} /> Agent Feed
           </button>
-          <button onClick={() => openPacketView(26, "monitoring")} style={{ display: "flex", alignItems: "center", gap: 7, background: C.bg, border: `1px solid ${C.line}`, color: C.ink, padding: "9px 14px", borderRadius: 10, fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: FONT }}>
+          <button onClick={() => openPacketView(26, "scenario")} style={{ display: "flex", alignItems: "center", gap: 7, background: C.bg, border: `1px solid ${C.line}`, color: C.ink, padding: "9px 14px", borderRadius: 10, fontSize: 12.5, fontWeight: 700, cursor: "pointer", fontFamily: FONT }}>
             <AlertTriangle size={14} color={C.red} /> Alerts {alertCount}
           </button>
-          <button onClick={() => { setScreen("scenario"); showToast("Live episode opened in Scenario Room"); }} style={{ display: "flex", alignItems: "center", gap: 7, background: C.core, border: "none", color: "#fff", padding: "10px 16px", borderRadius: 10, fontSize: 12.5, fontWeight: 800, cursor: "pointer", fontFamily: FONT }}>
-            <Play size={14} fill="#fff" /> Run live episode
+          <button onClick={runLiveEpisode} style={{ display: "flex", alignItems: "center", gap: 7, background: episode === "running" ? C.dark : C.core, border: "none", color: "#fff", padding: "10px 16px", borderRadius: 10, fontSize: 12.5, fontWeight: 800, cursor: "pointer", fontFamily: FONT }}>
+            <Play size={14} fill="#fff" /> {episode === "running" ? "Running episode" : episode === "complete" ? "Replay live episode" : "Run live episode"}
           </button>
         </div>
         <div style={{ flex: 1, minHeight: 0, position: "relative" }}>
@@ -8534,9 +8614,9 @@ export default function FactoryMindDemo() {
                 <DHCHeader />
                 <GradSep />
                 <EnterpriseGraph onOpenPacket={(label) => {
-                  if (label === "Packet #24") openPacketView(24, "scenario");
+                  if (label === "Packet #24") openPacketView(24, "monitoring");
                   else if (label === "Packet #25") openPacketView(25, "planning");
-                  else if (label === "Packet #26") openPacketView(26, "monitoring");
+                  else if (label === "Packet #26") openPacketView(26, "scenario");
                   else if (label === "Report #7") setScreen("reports");
                   else if (label === "Scenario #3") setScreen("scenario");
                 }} />
@@ -8583,7 +8663,7 @@ export default function FactoryMindDemo() {
                   const open = hoverFeed === (e.key || `${e.ts}-${idx}`);
                   const go = () => {
                     setFeedOpen(false);
-                    if (agentKey === "orchestrator" || agentKey === "audit") openPacketView(24, "scenario");
+                    if (agentKey === "orchestrator" || agentKey === "audit") openPacketView(24, "monitoring");
                     else if (agentKey === "procurement" || agentKey === "logistics" || agentKey === "commercial" || agentKey === "finance" || agentKey === "production" || agentKey === "external") { setBiTab(agentKey === "weather" ? "external" : agentKey); setScreen("bi"); }
                     else { setScreen("scenario"); }
                   };
