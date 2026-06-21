@@ -5617,6 +5617,9 @@ function EnterpriseGraph({ onOpenPacket }: { onOpenPacket?: (label: string) => v
 function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activeSignalCount, selectedActions }) {
   const [radarReady, setRadarReady] = useState(false);
   const [baseSummaryOpen, setBaseSummaryOpen] = useState(false);
+  const [year1Adoption, setYear1Adoption] = useState(50);
+  const [discountRate, setDiscountRate] = useState(10);
+  const [cocoaSpend, setCocoaSpend] = useState(30);
   useEffect(() => { const t = setTimeout(() => setRadarReady(true), 300); return () => clearTimeout(t); }, []);
 
   /* ── Radar chart data ── */
@@ -5674,6 +5677,9 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
       valueArea: "18,154 86,141 154,101 222,61 290,39 358,31 358,154 18,154",
     },
   ];
+  const adoptionNpv = year1Adoption === 30 ? "€4.7M" : year1Adoption === 40 ? "€4.9M" : year1Adoption === 60 ? "€5.2M" : year1Adoption === 70 ? "€5.3M" : "€5.1M";
+  const discountNpv = discountRate === 6 ? "€5.7M" : discountRate === 8 ? "€5.4M" : discountRate === 12 ? "€4.8M" : discountRate === 15 ? "€4.3M" : "€5.1M";
+  const cocoaAnnualBenefit = cocoaSpend === 20 ? "€1.39M" : cocoaSpend === 40 ? "€2.03M" : "€1.71M";
 
   return (
     <div style={{ marginTop: 10 }}>
@@ -5976,6 +5982,34 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
           <div style={{ fontSize: 13.5, color: C.soft, marginTop: 3 }}>Impact on Enterprise EVaR, Benefits and Financial Returns (5-year view, 10% discount rate)</div>
         </div>
 
+        <div style={{ marginBottom: 14, borderRadius: 14, border: "1px solid rgba(161,0,255,0.18)", background: "linear-gradient(135deg,rgba(161,0,255,0.08),#fff 58%,rgba(30,113,69,0.05))", padding: 14, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
+          {[
+            { title: "Year-1 Adoption", value: `${year1Adoption}%`, impact: `NPV ${adoptionNpv}`, opts: [30, 40, 50, 60, 70], active: year1Adoption, set: setYear1Adoption, suffix: "%" },
+            { title: "Discount Rate", value: `${discountRate}%`, impact: `NPV ${discountNpv}`, opts: [6, 8, 10, 12, 15], active: discountRate, set: setDiscountRate, suffix: "%" },
+            { title: "Cocoa Spend", value: `€${cocoaSpend}M`, impact: `Annual benefit ${cocoaAnnualBenefit}`, opts: [20, 30, 40], active: cocoaSpend, set: setCocoaSpend, prefix: "€", suffix: "M" },
+          ].map((control) => (
+            <div key={control.title} style={{ borderRadius: 12, background: "#fff", border: `1px solid ${C.line}`, padding: 12, boxShadow: "0 8px 20px rgba(10,10,15,0.04)" }}>
+              <div style={{ display: "flex", alignItems: "baseline", justifyContent: "space-between", gap: 10, marginBottom: 9 }}>
+                <div>
+                  <div style={{ fontSize: 10, fontWeight: 900, color: C.soft, letterSpacing: 0.8, textTransform: "uppercase" }}>{control.title}</div>
+                  <div style={{ fontSize: 13, fontWeight: 850, color: C.core, marginTop: 3 }}>{control.impact}</div>
+                </div>
+                <div style={{ fontSize: 19, fontWeight: 950, color: C.ink, ...NUM }}>{control.value}</div>
+              </div>
+              <div style={{ display: "flex", gap: 6, flexWrap: "wrap" }}>
+                {control.opts.map((opt) => {
+                  const active = opt === control.active;
+                  return (
+                    <button key={opt} onClick={() => control.set(opt)} style={{ border: active ? `1px solid ${C.core}` : `1px solid ${C.line}`, background: active ? "rgba(161,0,255,0.10)" : "#fff", color: active ? C.core : C.soft, borderRadius: 999, padding: "6px 8px", fontSize: 11, fontWeight: 900, cursor: "pointer", boxShadow: active ? "0 0 0 3px rgba(161,0,255,0.06)" : "none", ...NUM }}>
+                      {control.prefix || ""}{opt}{control.suffix || ""}
+                    </button>
+                  );
+                })}
+              </div>
+            </div>
+          ))}
+        </div>
+
         <div style={{ display: "grid", gridTemplateColumns: "repeat(3,minmax(0,1fr))", gap: 12 }}>
           {economicScenarios.map((sc) => {
             const Icon = sc.icon;
@@ -6012,11 +6046,6 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
             }
             return (
               <div key={sc.title} onClick={() => isBaseCase && setBaseSummaryOpen(true)} style={{ position: "relative", borderRadius: 14, border: isBaseCase ? `1px solid ${C.core}66` : `1px solid ${sc.tone}28`, background: isBaseCase ? "radial-gradient(circle at 82% 12%,rgba(161,0,255,0.18),transparent 28%), linear-gradient(180deg,rgba(161,0,255,0.09),#fff 34%)" : sc.bg, overflow: "hidden", boxShadow: isBaseCase ? "0 0 0 3px rgba(161,0,255,0.06), 0 18px 42px rgba(161,0,255,0.18)" : `0 8px 22px ${sc.tone}10`, cursor: isBaseCase ? "pointer" : "default", transform: isBaseCase ? "translateY(-2px)" : "none" }}>
-                {isBaseCase && (
-                  <div style={{ position: "absolute", top: 12, right: 12, display: "inline-flex", alignItems: "center", gap: 6, padding: "5px 9px", borderRadius: 999, background: "rgba(161,0,255,0.12)", border: "1px solid rgba(161,0,255,0.22)", color: C.core, fontSize: 10.5, fontWeight: 900, zIndex: 2 }}>
-                    <Sparkles size={12} /> Click to view summary <ChevronRight size={12} />
-                  </div>
-                )}
                 <div style={{ padding: "15px 18px 10px", display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10 }}>
                   <div style={{ display: "flex", gap: 11, alignItems: "center" }}>
                     <div style={{ width: 38, height: 38, borderRadius: 12, background: `${sc.tone}12`, display: "grid", placeItems: "center" }}><Icon size={22} color={sc.tone} /></div>
@@ -6064,12 +6093,6 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
                   <div style={{ borderRadius: 10, background: `${sc.tone}12`, color: sc.tone, textAlign: "center", padding: "9px 10px", fontSize: 13, fontWeight: 900 }}>
                     Residual EVaR (Year 1): {sc.residual}
                   </div>
-                  {isBaseCase && (
-                    <div style={{ marginTop: 9, borderRadius: 10, background: "linear-gradient(90deg,rgba(161,0,255,0.14),rgba(199,125,255,0.10))", color: C.core, padding: "9px 10px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 8, fontSize: 12, fontWeight: 900 }}>
-                      <span>Open economic summary</span>
-                      <ChevronRight size={15} />
-                    </div>
-                  )}
                 </div>
               </div>
             );
