@@ -5643,12 +5643,12 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
 
   /* ── Compact KPI rows ── */
   const metrics = [
-    { label: "Decision Cycle Time", icon: Clock, before: "4–7 days", after: "<4 hours", delta: "~−95%", bar: 95 },
-    { label: "Planning Effort", icon: Users, before: "130 h / cycle", after: "40 h / cycle", delta: "−69%", bar: 69 },
-    { label: "Scenario Analysis Capability", icon: LayoutGrid, before: "0–1 scenarios", after: "10,000+ simulations", delta: "10,000x+", bar: 100 },
-    { label: "Emergency Procurement", icon: ShoppingCart, before: "Baseline (100%)", after: "−60% frequency", delta: "−60%", bar: 60 },
-    { label: "Enterprise EVaR", icon: ShieldCheck, before: "€2.80M", after: "€1.20M", delta: "−57%", bar: 57 },
-    { label: "Decision Documentation", icon: FileCheck2, before: "Manual / fragmented", after: "100% audit trail", delta: "100%", bar: 100 },
+    { label: "Decision Cycle Time", icon: Clock, before: "4–7 days", after: "<4 hours", delta: "~−95%", bar: 95, source: "Baseline: 4–7 business days. Basis: Ad-hoc escalation outside the monthly executive gate." },
+    { label: "Planning Effort", icon: Users, before: "130 h / cycle", after: "40 h / cycle", delta: "−69%", bar: 69, source: "Baseline: ~130 hrs/cycle. Basis: Process design; consistent with McKinsey findings on data-collection burden vs. decision time." },
+    { label: "Scenario Analysis Capability", icon: LayoutGrid, before: "0–1 scenarios", after: "10,000+ simulations", delta: "10,000x+", bar: 100, source: "Baseline: 0% scenario analysis. Basis: Current-state process assessment (synthetic baseline)." },
+    { label: "Emergency Procurement", icon: ShoppingCart, before: "Baseline (100%)", after: "−60% frequency", delta: "−60%", bar: 60, source: "Baseline: Emergency / spot purchases equal 8–12% of procurement spend. Basis: BCG industry evidence on reactive procurement under volatility." },
+    { label: "Enterprise EVaR", icon: ShieldCheck, before: "€2.80M", after: "€1.20M", delta: "−57%", bar: 57, source: "Baseline: Not measured today; estimated at €2.8M. Basis: CocoaRisk model estimate across 5 MVP domains." },
+    { label: "Decision Documentation", icon: FileCheck2, before: "Manual / fragmented", after: "100% audit trail", delta: "100%", bar: 100, source: "Baseline: 0% decisions with audit trail. Basis: Current-state process assessment (synthetic baseline)." },
   ];
 
   const economicScenarios = [
@@ -5801,6 +5801,9 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
                   <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
                     <Icon size={14} color={C.core} style={{ flexShrink: 0 }} />
                     <div style={{ fontSize: 10.8, fontWeight: 800, color: C.ink, overflow: "hidden", textOverflow: "ellipsis" }}>{m.label}</div>
+                    <span title={m.source} style={{ width: 15, height: 15, borderRadius: 99, border: `1px solid ${C.line}`, display: "inline-grid", placeItems: "center", flexShrink: 0, cursor: "help", background: "#fff" }}>
+                      <Info size={10} color={C.soft} />
+                    </span>
                   </div>
                   <div style={{ fontSize: 10.5, fontWeight: 750, color: C.soft, ...NUM }}>{m.before}</div>
                   <div style={{ fontSize: 10.8, fontWeight: 900, color: C.core, ...NUM }}>{m.after}</div>
@@ -5895,7 +5898,6 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
                   <path d="M10,40 A40,40 0 0 1 90,40" fill="none" stroke={`${C.green}26`} strokeWidth="9" strokeLinecap="round" />
                   <path d="M10,40 A40,40 0 0 1 88.4,28.8" fill="none" stroke={C.green} strokeWidth="9" strokeLinecap="round" />
                 </svg>
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, fontSize: 16, fontWeight: 900, color: C.green, ...NUM }}>91%</div>
               </div>
               <div style={{ width: "100%", background: `${C.green}0D`, borderRadius: 9, padding: "9px 11px", display: "grid", gap: 6 }}>
                 {[["12", "Decision packets"], ["8", "Approved actions"], ["100%", "Audit trail coverage"]].map(([n, l]) => (
