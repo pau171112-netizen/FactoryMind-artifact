@@ -11,7 +11,7 @@ import {
   Layers, Search, Eye, Download, MoreVertical, ExternalLink, FileArchive,
   FileSpreadsheet, Presentation, Landmark,
   Cloud, Container, TrendingUp, Radar, Network,
-  Satellite, Brain, Target, Calendar, ChevronDown, Rocket,
+  Satellite, Target, Calendar, ChevronDown, Rocket,
 } from "lucide-react";
 
 /* ============ TOKENS ============ */
@@ -5862,26 +5862,6 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
               </div>
             </div>
 
-            {/* AI COVERAGE */}
-            <div style={{ borderRadius: 14, border: `1px solid ${C.line}`, background: "linear-gradient(180deg,#FBF7FF,#fff)", padding: 16, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <div style={{ width: 46, height: 46, borderRadius: 99, background: "rgba(161,0,255,0.10)", display: "grid", placeItems: "center", marginBottom: 10 }}><Brain size={20} color={C.core} /></div>
-              <div style={{ fontSize: 10.5, fontWeight: 800, color: C.soft, letterSpacing: 0.8 }}>AI COVERAGE</div>
-              <div style={{ fontSize: 30, fontWeight: 900, color: C.core, ...NUM, lineHeight: 1.1, marginTop: 4 }}>82%</div>
-              <div style={{ fontSize: 12, color: C.soft, marginBottom: 8 }}>Risk domains covered</div>
-              <div style={{ position: "relative", marginBottom: 10 }}>
-                <svg viewBox="0 0 100 44" style={{ width: 96, height: 44 }}>
-                  <path d="M10,40 A40,40 0 0 1 90,40" fill="none" stroke="#EEE9F5" strokeWidth="9" strokeLinecap="round" />
-                  <path d="M10,40 A40,40 0 0 1 83.8,18.6" fill="none" stroke={C.core} strokeWidth="9" strokeLinecap="round" />
-                </svg>
-                <div style={{ position: "absolute", bottom: 0, left: 0, right: 0, fontSize: 16, fontWeight: 900, color: C.deep, ...NUM }}>82%</div>
-              </div>
-              <div style={{ width: "100%", background: "#F7F5FB", borderRadius: 9, padding: "9px 11px", display: "grid", gap: 6 }}>
-                {[["6", "Active agents"], ["120", "Graph updates / day"], ["92%", "Entity resolution"]].map(([n, l]) => (
-                  <div key={l} style={{ display: "flex", gap: 9, alignItems: "baseline" }}><span style={{ fontSize: 12, fontWeight: 900, color: C.deep, ...NUM, minWidth: 30, textAlign: "left" }}>{n}</span><span style={{ fontSize: 11, color: C.soft }}>{l}</span></div>
-                ))}
-              </div>
-            </div>
-
             {/* SCENARIO ANALYSIS */}
             <div style={{ borderRadius: 14, border: `1px solid ${C.line}`, background: "linear-gradient(180deg,#F5F8FF,#fff)", padding: 16, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
               <div style={{ width: 46, height: 46, borderRadius: 99, background: "rgba(47,107,255,0.10)", display: "grid", placeItems: "center", marginBottom: 10 }}><TrendingUp size={20} color="#2F6BFF" /></div>
@@ -5915,6 +5895,26 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
                 {[["12", "Decision packets"], ["8", "Approved actions"], ["100%", "Audit trail coverage"]].map(([n, l]) => (
                   <div key={l} style={{ display: "flex", gap: 9, alignItems: "baseline" }}><span style={{ fontSize: 12, fontWeight: 900, color: C.green, ...NUM, minWidth: 30, textAlign: "left" }}>{n}</span><span style={{ fontSize: 11, color: C.soft }}>{l}</span></div>
                 ))}
+              </div>
+            </div>
+
+            {/* INVESTMENT REQUIRED */}
+            <div style={{ borderRadius: 14, border: `1px solid ${C.core}33`, background: "linear-gradient(180deg,#FBF7FF,#fff)", padding: 16, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center", boxShadow: "0 10px 28px rgba(161,0,255,0.06)" }}>
+              <div style={{ width: 46, height: 46, borderRadius: 99, background: "rgba(161,0,255,0.10)", display: "grid", placeItems: "center", marginBottom: 10 }}><Lock size={20} color={C.core} /></div>
+              <div style={{ fontSize: 10.5, fontWeight: 800, color: C.soft, letterSpacing: 0.8 }}>INVESTMENT REQUIRED</div>
+              <div style={{ fontSize: 30, fontWeight: 900, color: C.core, ...NUM, lineHeight: 1.1, marginTop: 4 }}>€310k</div>
+              <div style={{ fontSize: 12, color: C.soft, marginBottom: 10 }}>Year-1 investment</div>
+              <div style={{ width: "100%", background: "#F7F5FB", borderRadius: 9, padding: "9px 11px", display: "grid", gap: 6 }}>
+                {[["€80k", "Data + Knowledge Graph"], ["€60k", "Risk + Monte Carlo"], ["€120k", "Agents + UI"], ["€50k", "Change management"]].map(([n, l]) => (
+                  <div key={l} style={{ display: "flex", gap: 9, alignItems: "baseline", justifyContent: "space-between", textAlign: "left" }}>
+                    <span style={{ fontSize: 12, fontWeight: 900, color: C.deep, ...NUM, whiteSpace: "nowrap" }}>{n}</span>
+                    <span style={{ fontSize: 10.2, color: C.soft, textAlign: "right" }}>{l}</span>
+                  </div>
+                ))}
+              </div>
+              <div style={{ marginTop: "auto", paddingTop: 10, fontSize: 10.5, color: C.soft, lineHeight: 1.35 }}>
+                <b style={{ color: C.deep, ...NUM }}>€100k/year ongoing</b><br />
+                incl. ~€6k LLM API
               </div>
             </div>
 
