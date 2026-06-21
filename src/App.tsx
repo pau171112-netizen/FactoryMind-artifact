@@ -4754,6 +4754,7 @@ const EG_CATS = {
   decision: { label: "Decision Packet", color: "#C026D3", steward: "Operations Director" },
 };
 const EG_COUNTS = { external: 18, supplier: 26, contract: 32, recipe: 22, sku: 58, plant: 8, inventory: 16, logistics: 20, customer: 40, commercial: 14, finance: 12, evar: 1, decision: 5 };
+const EG_NODE_COUNT = Object.values(EG_COUNTS).reduce((sum, n) => sum + n, 0);
 const EG_STEWARD_COLORS = { "Signal Layer": "#E0992B", "Procurement": "#A100FF", "Legal": "#7500C0", "Operations": "#378ADD", "Logistics": "#D85A30", "Commercial": "#639922", "Finance": "#BA7517", "Operations Director": "#C026D3" };
 const EG_HERO = {
   external: ["Bloomberg Cocoa", "ICCO Deficit", "Copernicus Weather", "TTF Energy", "Abidjan Port", "ICE Futures", "EUR/USD FX"],
@@ -8225,7 +8226,7 @@ export default function FactoryMindDemo() {
           <div>
             <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1.2, color: "rgba(255,255,255,0.45)", textTransform: "uppercase" }}>Data Health Center</div>
             <div style={{ fontSize: 18, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginTop: 1 }}>Company Master Knowledge Graph</div>
-            <div style={{ fontSize: 11.5, color: "rgba(255,255,255,0.55)", marginTop: 3 }}>8 sources · 273 graph nodes · steward governance active</div>
+            <div style={{ fontSize: 11.5, color: "rgba(255,255,255,0.55)", marginTop: 3 }}>8 sources · {EG_NODE_COUNT} graph nodes · steward governance active</div>
           </div>
         </div>
         <div style={{ flex: 1 }}/>
