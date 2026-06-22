@@ -4358,7 +4358,10 @@ function LivingCausalGraph({ sEvar, portfolio, selectedActions, hoverAction, set
   const activeActionList = visibleActions.filter((a) => previewIds.has(a.id));
   const activeNodes = new Set(activeActionList.flatMap((a) => a.nodes));
   const residualRatio = _clamp(previewPortfolio.residual / Math.max(sEvar, 0.1), 0.12, 1);
-  const fullyMitigated = visibleActions.length > 0 && visibleActions.every((a) => previewIds.has(a.id));
+  const mitigationTargetIds = scenarioIntel?.optimalIds
+    ? [...scenarioIntel.optimalIds].filter((id) => visibleActionIds.includes(id))
+    : visibleActionIds;
+  const fullyMitigated = mitigationTargetIds.length > 0 && mitigationTargetIds.every((id) => previewIds.has(id));
   const visualResidualRatio = fullyMitigated ? Math.min(residualRatio, 0.24) : residualRatio;
   const evarTween = useTween(previewPortfolio.residual, 850);
   const nodeDefs = [
