@@ -5645,12 +5645,13 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
 
   /* ── Compact KPI rows ── */
   const metrics = [
-    { label: "Decision Cycle Time", icon: Clock, before: "4–7 days", after: "<4 hours", delta: "~−95%", bar: 95, source: "Baseline: 4–7 business days. Basis: Ad-hoc escalation outside the monthly executive gate." },
-    { label: "Planning Effort", icon: Users, before: "130 h / cycle", after: "40 h / cycle", delta: "−69%", bar: 69, source: "Baseline: ~130 hrs/cycle. Basis: Process design; consistent with McKinsey findings on data-collection burden vs. decision time." },
-    { label: "Scenario Analysis Capability", icon: LayoutGrid, before: "0–1 scenarios", after: "10,000+ simulations", delta: "10,000x+", bar: 100, source: "Baseline: 0% scenario analysis. Basis: Current-state process assessment (synthetic baseline)." },
-    { label: "Emergency Procurement", icon: ShoppingCart, before: "Baseline (100%)", after: "−60% frequency", delta: "−60%", bar: 60, source: "Baseline: Emergency / spot purchases equal 8–12% of procurement spend. Basis: BCG industry evidence on reactive procurement under volatility." },
-    { label: "Enterprise EVaR", icon: ShieldCheck, before: "€2.80M", after: "€1.20M", delta: "−57%", bar: 57, source: "Baseline: Not measured today; estimated at €2.8M. Basis: CocoaRisk model estimate across 5 MVP domains." },
-    { label: "Decision Documentation", icon: FileCheck2, before: "Manual / fragmented", after: "100% audit trail", delta: "100%", bar: 100, source: "Baseline: 0% decisions with audit trail. Basis: Current-state process assessment (synthetic baseline)." },
+    { label: "S&OP Preparation Effort", icon: Users, before: "~130 hrs/cycle", after: "40 h / cycle", delta: "−69%", bar: 69, source: "Category: Time. Baseline: ~130 hrs/cycle. Basis / Source: Process design; consistent with McKinsey findings on data-collection burden vs. decision time." },
+    { label: "Mid-Cycle Decision Latency", icon: Clock, before: "4–7 business days", after: "<4 hours", delta: "~−95%", bar: 95, source: "Category: Time. Baseline: 4–7 business days. Basis / Source: Ad-hoc escalation outside the monthly executive gate." },
+    { label: "Emergency / Spot Purchases", icon: ShoppingCart, before: "8–12% of spend", after: "−60% frequency", delta: "−60%", bar: 60, source: "Category: Cost. Baseline: Emergency / spot purchases equal 8–12% of procurement spend. Basis / Source: BCG industry evidence on reactive procurement under volatility." },
+    { label: "Planning Conflict Downtime", icon: Activity, before: "20–22 hrs/week", after: "€400k avoided", delta: "€400k", bar: 76, source: "Category: Cost. Baseline: 20–22 hrs/week. Basis / Source: Manufacturing scheduling benchmarks; downtime cost €8–15k/hr." },
+    { label: "Forecast-to-Plan Accuracy", icon: TrendingUp, before: "75–82%", after: "+5 pts", delta: "+5 pts", bar: 62, source: "Category: Quality. Baseline: 75–82%. Basis / Source: Gartner Supply Chain FMCG benchmarks." },
+    { label: "Enterprise EVaR", icon: ShieldCheck, before: "Not measured (€2.8M est.)", after: "€1.20M tracked", delta: "−57%", bar: 57, source: "Category: Risk. Baseline: Not measured (est. €2.8M). Basis / Source: CocoaRisk model estimate across 5 MVP domains — not calculated today." },
+    { label: "Scenario Analysis / Audit Trail", icon: FileCheck2, before: "0% / 0%", after: "100% / 100%", delta: "100%", bar: 100, source: "Category: Risk. Baseline: Decisions with scenario analysis / audit trail: 0% / 0%. Basis / Source: Current-state process assessment (synthetic baseline)." },
   ];
 
   const economicScenarios = [
