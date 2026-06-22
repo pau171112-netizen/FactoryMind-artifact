@@ -4576,7 +4576,7 @@ function LivingCausalGraph({ sEvar, portfolio, selectedActions, hoverAction, set
                 <Zap size={9} color={C.core} /> Applicable actions
               </div>
               <div style={{ display: "grid", gap: 5 }}>
-                {(selectedActionsForNode.length ? selectedActionsForNode : recommendedActionsForNode).map((a) => {
+                {recommendedActionsForNode.map((a) => {
                   const active = selectedActions.has(a.id);
                   return (
                     <button key={a.id} onClick={() => toggleAction(a.id)} style={{ display: "flex", alignItems: "center", gap: 8, textAlign: "left", padding: "7px 9px", borderRadius: 8, border: `1.5px solid ${active ? C.core : "rgba(161,0,255,0.15)"}`, background: active ? C.purpBg : "#fff", cursor: "pointer", fontFamily: FONT, transition: "all .14s" }}>
@@ -4620,8 +4620,8 @@ function LivingCausalGraph({ sEvar, portfolio, selectedActions, hoverAction, set
                 onMouseEnter={() => setHoverAction(a.id)}
                 onMouseLeave={() => setHoverAction(null)}
                 onClick={() => toggleAction(a.id)}
-                style={{ textAlign: "left", padding: "9px 11px", borderRadius: 9, border: `1.5px solid ${borderCol}`, background: bgCol, cursor: "pointer", fontFamily: FONT, transition: "all .16s ease", boxShadow: checked ? "0 0 0 2px rgba(161,0,255,0.10)" : isAiRec && !checked ? "0 0 0 2px rgba(184,110,0,0.10)" : "none" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5 }}>
+                style={{ textAlign: "left", padding: "9px 11px", borderRadius: 9, border: `1.5px solid ${borderCol}`, background: bgCol, cursor: "pointer", fontFamily: FONT, transition: "background .16s ease, border-color .16s ease, box-shadow .16s ease", boxShadow: checked ? "0 0 0 2px rgba(161,0,255,0.10)" : isAiRec && !checked ? "0 0 0 2px rgba(184,110,0,0.10)" : "none", minHeight: 128 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6, marginBottom: 5, minHeight: 20 }}>
                   <span style={{ width: 13, height: 13, borderRadius: 4, border: `1.5px solid ${checked ? C.core : C.line}`, background: checked ? C.core : C.bg, color: "#fff", display: "inline-grid", placeItems: "center", fontSize: 9, flexShrink: 0 }}>{checked ? "✓" : ""}</span>
                   <div style={{ flex: 1, display: "flex", alignItems: "center", gap: 5, flexWrap: "wrap" }}>
                     {intel?.tag && (
@@ -4634,17 +4634,13 @@ function LivingCausalGraph({ sEvar, portfolio, selectedActions, hoverAction, set
                         <Sparkles size={8} /> AI
                       </span>
                     )}
-                    {checked && (
-                      <span style={{ fontSize: 9, fontWeight: 800, padding: "1px 5px", borderRadius: 99, background: "rgba(161,0,255,0.12)", color: C.core }}>Active</span>
-                    )}
+                    <span style={{ fontSize: 9, fontWeight: 800, padding: "1px 5px", borderRadius: 99, background: "rgba(161,0,255,0.12)", color: C.core, visibility: checked ? "visible" : "hidden" }}>Active</span>
                   </div>
                 </div>
                 <div style={{ fontSize: 11.5, fontWeight: 750, color: checked ? C.deep : C.ink, lineHeight: 1.25, marginBottom: 4 }}>{a.label}</div>
                 <div style={{ fontSize: 10, color: C.soft, ...NUM }}>€{a.cost}k · {a.conf}% conf</div>
                 <div style={{ fontSize: 10, color: C.green, fontWeight: 800, marginTop: 3 }}>{actionBadges(a)[0]}</div>
-                {intel?.note && (
-                  <div style={{ fontSize: 9.5, color: checked ? C.deep : C.soft, marginTop: 5, paddingTop: 5, borderTop: `1px solid ${C.line}`, lineHeight: 1.4 }}>{intel.note}</div>
-                )}
+                <div style={{ fontSize: 9.5, color: checked ? C.deep : C.soft, marginTop: 5, paddingTop: 5, borderTop: `1px solid ${intel?.note ? C.line : "transparent"}`, lineHeight: 1.4, minHeight: 34 }}>{intel?.note || ""}</div>
               </button>
             );
           })}
