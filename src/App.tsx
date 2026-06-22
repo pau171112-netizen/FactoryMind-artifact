@@ -5616,7 +5616,6 @@ function EnterpriseGraph({ onOpenPacket }: { onOpenPacket?: (label: string) => v
 
 function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activeSignalCount, selectedActions }) {
   const [radarReady, setRadarReady] = useState(false);
-  const [baseSummaryOpen, setBaseSummaryOpen] = useState(false);
   const [year1Adoption, setYear1Adoption] = useState(50);
   const [discountRate, setDiscountRate] = useState(10);
   const [cocoaSpend, setCocoaSpend] = useState(30);
@@ -5680,6 +5679,17 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
   const adoptionNpv = year1Adoption === 30 ? "€4.7M" : year1Adoption === 40 ? "€4.9M" : year1Adoption === 60 ? "€5.2M" : year1Adoption === 70 ? "€5.3M" : "€5.1M";
   const discountNpv = discountRate === 6 ? "€5.7M" : discountRate === 8 ? "€5.4M" : discountRate === 12 ? "€4.8M" : discountRate === 15 ? "€4.3M" : "€5.1M";
   const cocoaAnnualBenefit = cocoaSpend === 20 ? "€1.39M" : cocoaSpend === 40 ? "€2.03M" : "€1.71M";
+  const adoptionNpvValue = year1Adoption === 30 ? 4.7 : year1Adoption === 40 ? 4.9 : year1Adoption === 60 ? 5.2 : year1Adoption === 70 ? 5.3 : 5.1;
+  const discountNpvValue = discountRate === 6 ? 5.7 : discountRate === 8 ? 5.4 : discountRate === 12 ? 4.8 : discountRate === 15 ? 4.3 : 5.1;
+  const cocoaNpvAdjustment = cocoaSpend === 20 ? -0.35 : cocoaSpend === 40 ? 0.35 : 0;
+  const baseNpvValue = Math.max(4.1, Math.min(5.9, adoptionNpvValue + (discountNpvValue - 5.1) + cocoaNpvAdjustment));
+  const sensitivityBase = {
+    badge: `${year1Adoption}% realization`,
+    annual: cocoaAnnualBenefit,
+    payback: year1Adoption >= 60 || cocoaSpend === 40 ? "7–8 months" : year1Adoption <= 40 || cocoaSpend === 20 ? "~10 months" : "8–9 months",
+    npv: `€${baseNpvValue.toFixed(1)}M`,
+    residual: year1Adoption >= 70 ? "€1.05M" : year1Adoption >= 60 ? "€1.12M" : year1Adoption <= 30 ? "€1.42M" : year1Adoption <= 40 ? "€1.31M" : "€1.20M",
+  };
 
   return (
     <div style={{ marginTop: 10 }}>
@@ -5938,6 +5948,9 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
                 <div style={{ fontSize: 26, fontWeight: 900, color: C.green, ...NUM, lineHeight: 1.05 }}>€1.71M</div>
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 5, fontSize: 11.5, color: C.soft, marginTop: 2 }}><TrendingUp size={13} color={C.green} /> Annual Benefit (base case, full run-rate)</div>
               </div>
+              <div style={{ marginTop: 12, borderRadius: 12, background: "rgba(232,137,12,0.10)", border: "1px solid rgba(232,137,12,0.20)", padding: "9px 10px", fontSize: 10.6, lineHeight: 1.35, fontWeight: 900, color: "#B86B00" }}>
+                1 detected event can cover the full MVP investment.
+              </div>
             </div>
           </div>
         </div>
@@ -5981,7 +5994,7 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
       <div style={{ marginTop: 14, borderRadius: 18, background: "#fff", border: `1px solid ${C.line}`, boxShadow: "0 10px 32px rgba(10,10,15,0.05)", padding: 20 }}>
         <div style={{ marginBottom: 14 }}>
           <div style={{ fontSize: 18, fontWeight: 900, color: C.ink, letterSpacing: 0.2, textTransform: "uppercase" }}>Scenario Analysis & Economic Outcomes</div>
-          <div style={{ fontSize: 13.5, color: C.soft, marginTop: 3 }}>Impact on Enterprise EVaR, Benefits and Financial Returns (5-year view, 10% discount rate)</div>
+          <div style={{ fontSize: 13.5, color: C.soft, marginTop: 3 }}>Impact on Enterprise EVaR, Benefits and Financial Returns (5-year view, selected assumptions)</div>
         </div>
 
         <div style={{ marginBottom: 14, borderRadius: 14, border: "1px solid rgba(161,0,255,0.18)", background: "linear-gradient(135deg,rgba(161,0,255,0.08),#fff 58%,rgba(30,113,69,0.05))", padding: 14, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 12 }}>
@@ -6017,37 +6030,9 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
             const Icon = sc.icon;
             const chartId = `econValue-${sc.title.replace(/\W+/g, "")}`;
             const isBaseCase = sc.title === "Base Case";
-            if (isBaseCase && baseSummaryOpen) {
-              return (
-                <div key="base-summary" onClick={() => setBaseSummaryOpen(false)} style={{ borderRadius: 18, border: "1px solid rgba(161,0,255,0.22)", background: "linear-gradient(180deg,rgba(161,0,255,0.08),#fff 24%)", overflow: "hidden", boxShadow: "0 12px 30px rgba(70,0,115,0.10)", padding: 22, cursor: "pointer" }}>
-                  <div style={{ fontSize: 22, fontWeight: 950, color: C.ink, textTransform: "uppercase", letterSpacing: -0.4, lineHeight: 1.08, marginBottom: 18 }}>Economic Summary (Base Case)</div>
-                  <div style={{ display: "grid", gap: 0, borderTop: `1px solid ${C.line}` }}>
-                    {[
-                      [Lock, "Year-1 Investment", "€310k"],
-                      [Sparkles, "Annual Benefit (Full Run-Rate)", "€1.71M"],
-                      [ShieldCheck, "Year-1 Realization", "50%"],
-                      [Clock, "Payback Period", "8–9 months"],
-                      [TrendingUp, "5-Yr NPV (10% discount rate)", "€5.1M"],
-                      [Target, "5-Yr ROI", "> 8x"],
-                    ].map(([RowIcon, label, value]) => (
-                      <div key={label} style={{ display: "grid", gridTemplateColumns: "28px 1fr auto", gap: 12, alignItems: "center", padding: "13px 0", borderBottom: `1px solid ${C.line}` }}>
-                        <RowIcon size={18} color={C.core} />
-                        <div style={{ fontSize: 14, fontWeight: 850, color: C.ink, lineHeight: 1.2 }}>{label}</div>
-                        <div style={{ fontSize: 18, fontWeight: 950, color: C.core, ...NUM, whiteSpace: "nowrap" }}>{value}</div>
-                      </div>
-                    ))}
-                  </div>
-                  <div style={{ marginTop: 20, borderRadius: 14, background: "rgba(161,0,255,0.10)", border: "1px solid rgba(161,0,255,0.20)", padding: "18px 18px", display: "grid", gridTemplateColumns: "34px 1fr", gap: 14, alignItems: "center" }}>
-                    <Sparkles size={28} color={C.core} />
-                    <div style={{ fontSize: 15, lineHeight: 1.45, fontWeight: 900, color: C.core }}>
-                      One avoided emergency cocoa purchase (500-ton lot) is worth €300k–€600k, enough to cover the entire MVP investment.
-                    </div>
-                  </div>
-                </div>
-              );
-            }
+            const display = isBaseCase ? { ...sc, ...sensitivityBase } : sc;
             return (
-              <div key={sc.title} onClick={() => isBaseCase && setBaseSummaryOpen(true)} style={{ position: "relative", borderRadius: 14, border: isBaseCase ? `1px solid ${C.core}66` : `1px solid ${sc.tone}28`, background: isBaseCase ? "radial-gradient(circle at 82% 12%,rgba(161,0,255,0.18),transparent 28%), linear-gradient(180deg,rgba(161,0,255,0.09),#fff 34%)" : sc.bg, overflow: "hidden", boxShadow: isBaseCase ? "0 0 0 3px rgba(161,0,255,0.06), 0 18px 42px rgba(161,0,255,0.18)" : `0 8px 22px ${sc.tone}10`, cursor: isBaseCase ? "pointer" : "default", transform: isBaseCase ? "translateY(-2px)" : "none" }}>
+              <div key={sc.title} style={{ position: "relative", borderRadius: 14, border: isBaseCase ? `1px solid ${C.core}66` : `1px solid ${sc.tone}28`, background: isBaseCase ? "radial-gradient(circle at 82% 12%,rgba(161,0,255,0.18),transparent 28%), linear-gradient(180deg,rgba(161,0,255,0.09),#fff 34%)" : sc.bg, overflow: "hidden", boxShadow: isBaseCase ? "0 0 0 3px rgba(161,0,255,0.06), 0 18px 42px rgba(161,0,255,0.18)" : `0 8px 22px ${sc.tone}10`, transform: isBaseCase ? "translateY(-2px)" : "none", transition: "box-shadow .25s ease, transform .25s ease" }}>
                 <div style={{ padding: "15px 18px 10px", display: "flex", alignItems: "flex-start", justifyContent: "space-between", gap: 10 }}>
                   <div style={{ display: "flex", gap: 11, alignItems: "center" }}>
                     <div style={{ width: 38, height: 38, borderRadius: 12, background: `${sc.tone}12`, display: "grid", placeItems: "center" }}><Icon size={22} color={sc.tone} /></div>
@@ -6056,14 +6041,14 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
                       <div style={{ fontSize: 11.5, color: C.ink, marginTop: 2 }}>{sc.subtitle}</div>
                     </div>
                   </div>
-                  <div style={{ padding: "5px 10px", borderRadius: 999, background: `${sc.tone}12`, color: sc.tone, fontSize: 10.5, fontWeight: 900 }}>{sc.badge}</div>
+                  <div style={{ padding: "5px 10px", borderRadius: 999, background: `${sc.tone}12`, color: sc.tone, fontSize: 10.5, fontWeight: 900 }}>{display.badge}</div>
                 </div>
 
                 <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", borderTop: `1px solid ${C.line}`, borderBottom: `1px solid ${C.line}` }}>
                   {[
-                    ["Annual Benefit", sc.annual],
-                    ["Payback", sc.payback],
-                    ["5-Yr NPV (10%)", sc.npv],
+                    ["Annual Benefit", display.annual],
+                    ["Payback", display.payback],
+                    ["5-Yr NPV", display.npv],
                   ].map(([label, value], idx) => (
                     <div key={label} style={{ padding: "12px 14px", borderLeft: idx ? `1px solid ${C.line}` : "none" }}>
                       <div style={{ fontSize: 10.5, color: C.soft, fontWeight: 800 }}>{label}</div>
@@ -6093,8 +6078,13 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
                     {["0", "12M", "24M", "36M", "48M", "60M"].map((label, i) => <text key={label} x={38 + i * 64} y="176" fontSize="10" fill={C.soft} fontWeight="700" textAnchor="middle">{label}</text>)}
                   </svg>
                   <div style={{ borderRadius: 10, background: `${sc.tone}12`, color: sc.tone, textAlign: "center", padding: "9px 10px", fontSize: 13, fontWeight: 900 }}>
-                    Residual EVaR (Year 1): {sc.residual}
+                    Residual EVaR (Year 1): {display.residual}
                   </div>
+                  {isBaseCase && (
+                    <div style={{ marginTop: 8, fontSize: 10.5, color: C.soft, textAlign: "center", fontWeight: 800 }}>
+                      Base Case updates from the sensitivity assumptions above.
+                    </div>
+                  )}
                 </div>
               </div>
             );
