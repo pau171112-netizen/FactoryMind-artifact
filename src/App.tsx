@@ -5948,9 +5948,14 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
 
             {/* BUSINESS IMPACT */}
             <div style={{ position: "relative", borderRadius: 14, border: "1px solid rgba(232,137,12,0.30)", background: "linear-gradient(180deg,#FFF7EC,#fff)", padding: 16, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
-              <span title="Source: CocoaRisk Excel base-case model. Risk avoided = €600k procurement timing + €360k avoided emergency/spot purchases. Cost savings = €400k reduced downtime + €150k planning effort released + €200k commercial opportunities captured. Total annual benefit = €1.71M full run-rate." style={{ position: "absolute", top: 10, right: 10, width: 18, height: 18, borderRadius: 99, border: "1px solid rgba(232,137,12,0.28)", background: "rgba(255,255,255,0.78)", display: "grid", placeItems: "center", cursor: "help", boxShadow: "0 2px 8px rgba(232,137,12,0.10)" }}>
+              <span onMouseEnter={() => setSourceTip("businessImpact")} onMouseLeave={() => setSourceTip(null)} onClick={() => setSourceTip(sourceTip === "businessImpact" ? null : "businessImpact")} style={{ position: "absolute", top: 10, right: 10, width: 18, height: 18, borderRadius: 99, border: "1px solid rgba(232,137,12,0.28)", background: "rgba(255,255,255,0.78)", display: "grid", placeItems: "center", cursor: "help", boxShadow: "0 2px 8px rgba(232,137,12,0.10)" }}>
                 <Info size={11} color="#B86B00" />
               </span>
+              {sourceTip === "businessImpact" && (
+                <div style={{ position: "absolute", top: 34, right: 8, width: 292, zIndex: 60, padding: "10px 12px", borderRadius: 10, background: "#12091F", color: "rgba(255,255,255,0.88)", border: "1px solid rgba(232,137,12,0.34)", boxShadow: "0 16px 40px rgba(20,5,45,0.24)", fontSize: 11, lineHeight: 1.45, fontWeight: 650, textAlign: "left" }}>
+                  Source: CocoaRisk Excel base-case model. Risk avoided = €600k procurement timing + €360k avoided emergency/spot purchases. Cost savings = €400k reduced downtime + €150k planning effort released + €200k commercial opportunities captured. Total annual benefit = €1.71M full run-rate.
+                </div>
+              )}
               <div style={{ width: 46, height: 46, borderRadius: 99, background: "rgba(232,137,12,0.14)", display: "grid", placeItems: "center", marginBottom: 10 }}><ShieldCheck size={20} color="#E8890C" /></div>
               <div style={{ fontSize: 10.5, fontWeight: 800, color: C.soft, letterSpacing: 0.8, marginBottom: 8 }}>BUSINESS IMPACT</div>
               <div style={{ fontSize: 24, fontWeight: 900, color: "#E8890C", ...NUM, lineHeight: 1.05 }}>€960k</div>
@@ -5962,7 +5967,7 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
                 <div style={{ display: "flex", alignItems: "center", justifyContent: "center", gap: 5, fontSize: 11.5, color: C.soft, marginTop: 2 }}><TrendingUp size={13} color={C.green} /> Annual Benefit (base case, full run-rate)</div>
               </div>
               <div style={{ marginTop: 12, borderRadius: 12, background: "rgba(232,137,12,0.10)", border: "1px solid rgba(232,137,12,0.20)", padding: "9px 10px", fontSize: 10.6, lineHeight: 1.35, fontWeight: 900, color: "#B86B00" }}>
-                1 detected event can cover the full MVP investment.
+                1 detected cocoa event (€300–600k) covers the full €310k MVP investment.
               </div>
             </div>
           </div>
@@ -6006,7 +6011,17 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
       {/* ===== SCENARIO ECONOMICS ===== */}
       <div style={{ marginTop: 14, borderRadius: 18, background: "#fff", border: `1px solid ${C.line}`, boxShadow: "0 10px 32px rgba(10,10,15,0.05)", padding: 20 }}>
         <div style={{ marginBottom: 14 }}>
-          <div style={{ fontSize: 18, fontWeight: 900, color: C.ink, letterSpacing: 0.2, textTransform: "uppercase" }}>Scenario Analysis & Economic Outcomes</div>
+          <div style={{ display: "flex", alignItems: "center", gap: 8, position: "relative" }}>
+            <div style={{ fontSize: 18, fontWeight: 900, color: C.ink, letterSpacing: 0.2, textTransform: "uppercase" }}>Scenario Analysis & Economic Outcomes</div>
+            <span onMouseEnter={() => setSourceTip("scenarioAssumptions")} onMouseLeave={() => setSourceTip(null)} onClick={() => setSourceTip(sourceTip === "scenarioAssumptions" ? null : "scenarioAssumptions")} style={{ width: 18, height: 18, borderRadius: 99, border: `1px solid ${C.line}`, background: "#fff", display: "inline-grid", placeItems: "center", cursor: "help", boxShadow: "0 2px 8px rgba(10,10,15,0.08)" }}>
+              <Info size={11} color={C.soft} />
+            </span>
+            {sourceTip === "scenarioAssumptions" && (
+              <div style={{ position: "absolute", top: 28, left: 330, width: 360, zIndex: 60, padding: "10px 12px", borderRadius: 10, background: "#12091F", color: "rgba(255,255,255,0.88)", border: "1px solid rgba(161,0,255,0.28)", boxShadow: "0 16px 40px rgba(20,5,45,0.24)", fontSize: 11, lineHeight: 1.45, fontWeight: 650 }}>
+                Assumptions: Year-1 benefit realization sets adoption timing; discount rate changes 5-year NPV; cocoa spend scales annual benefit. Base case uses €310k Year-1 investment, €1.71M full annual benefit, 50% Year-1 realization and 8–9 month payback.
+              </div>
+            )}
+          </div>
           <div style={{ fontSize: 13.5, color: C.soft, marginTop: 3 }}>Impact on Enterprise EVaR, Benefits and Financial Returns (5-year view, selected assumptions)</div>
         </div>
 
@@ -6057,11 +6072,12 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
                   <div style={{ padding: "5px 10px", borderRadius: 999, background: `${sc.tone}12`, color: sc.tone, fontSize: 10.5, fontWeight: 900 }}>{display.badge}</div>
                 </div>
 
-                <div style={{ display: "grid", gridTemplateColumns: "repeat(3,1fr)", borderTop: `1px solid ${C.line}`, borderBottom: `1px solid ${C.line}` }}>
+                <div style={{ display: "grid", gridTemplateColumns: "repeat(4,1fr)", borderTop: `1px solid ${C.line}`, borderBottom: `1px solid ${C.line}` }}>
                   {[
                     ["Annual Benefit", display.annual],
                     ["Payback", display.payback],
                     ["5-Yr NPV", display.npv],
+                    ["Discount Rate", `${discountRate}%`],
                   ].map(([label, value], idx) => (
                     <div key={label} style={{ padding: "12px 14px", borderLeft: idx ? `1px solid ${C.line}` : "none" }}>
                       <div style={{ fontSize: 10.5, color: C.soft, fontWeight: 800 }}>{label}</div>
