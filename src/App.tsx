@@ -4607,7 +4607,7 @@ function LivingCausalGraph({ sEvar, portfolio, selectedActions, hoverAction, set
               <Pill tone="purple" style={{ display:"inline-flex", alignItems:"center", gap:4 }}>
                 <Sparkles size={9} /> {(scenarioIntel.evaluated).toLocaleString()} portfolios evaluated
               </Pill>
-              <Pill tone="grey">{[...scenarioIntel.optimalIds].length} pre-selected</Pill>
+              <Pill tone="grey">{[...scenarioIntel.optimalIds].length} recommended</Pill>
             </>
           )}
           {!scenarioIntel && portfolio.synergy && <Pill tone="purple" style={{ display:"inline-flex", alignItems:"center", gap:4 }}><Zap size={10} /> Actions reinforce each other</Pill>}
@@ -6670,9 +6670,7 @@ export default function FactoryMindDemo() {
     });
     setActiveVars(() => Object.fromEntries(VARIABLES.map((v) => [v.id, mergedVals[v.id] > 0])));
     setVarVals(() => mergedVals);
-    const _applyScenName = [...keys].map((k) => k.startsWith("preset:") ? k.slice(7) : null).filter(Boolean)[0] ?? null;
-    const _applyIntel = _applyScenName ? SCENARIO_INTELLIGENCE[_applyScenName] : null;
-    setSelectedActions(_applyIntel ? new Set(_applyIntel.optimalIds) : new Set());
+    setSelectedActions(new Set());
     runMC();
   };
 
@@ -7160,7 +7158,7 @@ export default function FactoryMindDemo() {
                         <div style={{ display: "flex", gap: 5, marginBottom: 7, flexWrap: "wrap" }}>
                           <span style={{ fontSize: 9.5, fontWeight: 700, padding: "2px 7px", borderRadius: 99, background: C.purpBg, color: C.core }}>{pIntel.evaluated.toLocaleString()} portfolios</span>
                           <span style={{ fontSize: 9.5, fontWeight: 700, padding: "2px 7px", borderRadius: 99, background: C.greenBg, color: C.green }}>{pIntel.confidence}% confidence</span>
-                          <span style={{ fontSize: 9.5, fontWeight: 700, padding: "2px 7px", borderRadius: 99, background: C.faint, color: C.soft }}>{[...pIntel.optimalIds].length} actions pre-selected</span>
+                          <span style={{ fontSize: 9.5, fontWeight: 700, padding: "2px 7px", borderRadius: 99, background: C.faint, color: C.soft }}>{[...pIntel.optimalIds].length} recommended actions</span>
                         </div>
                         <div style={{ fontSize: 10, color: C.soft, borderTop: `1px solid ${C.line}`, paddingTop: 7, lineHeight: 1.45 }}>
                           <b style={{ color: C.ink }}>Why this portfolio:</b> {pIntel.why}
