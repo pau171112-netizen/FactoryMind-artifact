@@ -5622,6 +5622,7 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
   const [year1Adoption, setYear1Adoption] = useState(50);
   const [discountRate, setDiscountRate] = useState(10);
   const [cocoaSpend, setCocoaSpend] = useState(30);
+  const [sourceTip, setSourceTip] = useState(null);
   useEffect(() => { const t = setTimeout(() => setRadarReady(true), 300); return () => clearTimeout(t); }, []);
 
   /* ── Radar chart data ── */
@@ -5811,13 +5812,18 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
             {metrics.map((m) => {
               const Icon = m.icon;
               return (
-                <div key={m.label} style={{ display: "grid", gridTemplateColumns: "1.35fr 0.85fr 1.05fr 1fr", gap: 10, alignItems: "center", padding: "8px 0", borderBottom: `1px solid ${C.line}` }}>
+                <div key={m.label} style={{ position: "relative", display: "grid", gridTemplateColumns: "1.35fr 0.85fr 1.05fr 1fr", gap: 10, alignItems: "center", padding: "8px 0", borderBottom: `1px solid ${C.line}` }}>
                   <div style={{ display: "flex", alignItems: "center", gap: 8, minWidth: 0 }}>
                     <Icon size={14} color={C.core} style={{ flexShrink: 0 }} />
                     <div style={{ fontSize: 10.8, fontWeight: 800, color: C.ink, overflow: "hidden", textOverflow: "ellipsis" }}>{m.label}</div>
-                    <span title={m.source} style={{ width: 15, height: 15, borderRadius: 99, border: `1px solid ${C.line}`, display: "inline-grid", placeItems: "center", flexShrink: 0, cursor: "help", background: "#fff" }}>
+                    <span onMouseEnter={() => setSourceTip(m.label)} onMouseLeave={() => setSourceTip(null)} onClick={() => setSourceTip(sourceTip === m.label ? null : m.label)} style={{ width: 15, height: 15, borderRadius: 99, border: `1px solid ${C.line}`, display: "inline-grid", placeItems: "center", flexShrink: 0, cursor: "help", background: "#fff" }}>
                       <Info size={10} color={C.soft} />
                     </span>
+                    {sourceTip === m.label && (
+                      <div style={{ position: "absolute", left: 24, top: 36, width: 350, zIndex: 50, padding: "10px 12px", borderRadius: 10, background: "#12091F", color: "rgba(255,255,255,0.88)", border: "1px solid rgba(161,0,255,0.28)", boxShadow: "0 16px 40px rgba(20,5,45,0.24)", fontSize: 11, lineHeight: 1.45, fontWeight: 650 }}>
+                        {m.source}
+                      </div>
+                    )}
                   </div>
                   <div style={{ fontSize: 10.5, fontWeight: 750, color: C.soft, ...NUM }}>{m.before}</div>
                   <div style={{ fontSize: 10.8, fontWeight: 900, color: C.core, ...NUM }}>{m.after}</div>
