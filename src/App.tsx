@@ -6842,30 +6842,32 @@ export default function FactoryMindDemo() {
 
   const ControlCenter = () => (
     <div>
-      {/* ── CINEMATIC HERO ── */}
-      <div style={{ borderRadius: 14, overflow: "hidden", background: "linear-gradient(115deg,#13082B 0%,#2D0A55 48%,#4A0E86 100%)", color: "#fff", padding: "20px 24px", marginBottom: 16, position: "relative", display: "flex", alignItems: "center", gap: 24 }}>
-        <svg viewBox="0 0 520 120" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.13 }}>
-          {Array.from({ length: 14 }).map((_, i) => <line key={`v${i}`} x1={i * 40} y1="0" x2={i * 40} y2="120" stroke="#fff" strokeWidth="0.5" />)}
-          {Array.from({ length: 4 }).map((_, i) => <line key={`h${i}`} x1="0" y1={i * 40} x2="520" y2={i * 40} stroke="#fff" strokeWidth="0.5" />)}
-          <path d="M0 92 L80 70 L160 78 L240 44 L320 56 L400 26 L480 36 L520 18" stroke="#fff" strokeWidth="1.5" fill="none" />
-          {[[80,70],[240,44],[400,26],[520,18]].map(([x,y],i)=><circle key={i} cx={x} cy={y} r="3" fill="#fff" />)}
-        </svg>
-        <div style={{ position: "relative", flex: 1 }}>
-          <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, textTransform: "uppercase", opacity: 0.62, display: "flex", alignItems: "center", gap: 8 }}>
-            <span style={{ width: 7, height: 7, borderRadius: 99, background: "#3DE38A", animation: "pulse 1.8s infinite" }} /> Live · Enterprise Control Center
-          </div>
-          <div style={{ fontSize: 26, fontWeight: 900, marginTop: 7, lineHeight: 1.08, letterSpacing: -0.5 }}>Uncertainty, governed in real time.</div>
-          <div style={{ fontSize: 12.5, opacity: 0.72, marginTop: 6, maxWidth: 470 }}>14 signal feeds · 6 specialist agents + Orchestrator + Audit Agent collaborating · every figure traced to a deterministic graph path.</div>
-        </div>
-        <div style={{ position: "relative", display: "flex", gap: 12 }}>
-          {[["EES", String(ees)], ["EVaR", `€${evar.toFixed(1)}M`], ["Agents", "8"]].map(([l, v]) => (
-            <div key={l} style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.16)", borderRadius: 12, padding: "12px 16px", minWidth: 84, textAlign: "center" }}>
-              <div style={{ fontSize: 9.5, opacity: 0.6, fontWeight: 800, letterSpacing: 0.6, textTransform: "uppercase" }}>{l}</div>
-              <div style={{ fontSize: 24, fontWeight: 900, ...NUM }}>{v}</div>
+      <StickyModuleHeader>
+        {/* ── CINEMATIC HERO ── */}
+        <div style={{ borderRadius: 14, overflow: "hidden", background: "linear-gradient(115deg,#13082B 0%,#2D0A55 48%,#4A0E86 100%)", color: "#fff", padding: "20px 24px", marginBottom: 16, position: "relative", display: "flex", alignItems: "center", gap: 24 }}>
+          <svg viewBox="0 0 520 120" preserveAspectRatio="none" style={{ position: "absolute", inset: 0, width: "100%", height: "100%", opacity: 0.13 }}>
+            {Array.from({ length: 14 }).map((_, i) => <line key={`v${i}`} x1={i * 40} y1="0" x2={i * 40} y2="120" stroke="#fff" strokeWidth="0.5" />)}
+            {Array.from({ length: 4 }).map((_, i) => <line key={`h${i}`} x1="0" y1={i * 40} x2="520" y2={i * 40} stroke="#fff" strokeWidth="0.5" />)}
+            <path d="M0 92 L80 70 L160 78 L240 44 L320 56 L400 26 L480 36 L520 18" stroke="#fff" strokeWidth="1.5" fill="none" />
+            {[[80,70],[240,44],[400,26],[520,18]].map(([x,y],i)=><circle key={i} cx={x} cy={y} r="3" fill="#fff" />)}
+          </svg>
+          <div style={{ position: "relative", flex: 1 }}>
+            <div style={{ fontSize: 10, fontWeight: 800, letterSpacing: 1.6, textTransform: "uppercase", opacity: 0.62, display: "flex", alignItems: "center", gap: 8 }}>
+              <span style={{ width: 7, height: 7, borderRadius: 99, background: "#3DE38A", animation: "pulse 1.8s infinite" }} /> Live · Enterprise Control Center
             </div>
-          ))}
+            <div style={{ fontSize: 26, fontWeight: 900, marginTop: 7, lineHeight: 1.08, letterSpacing: -0.5 }}>Uncertainty, governed in real time.</div>
+            <div style={{ fontSize: 12.5, opacity: 0.72, marginTop: 6, maxWidth: 470 }}>14 signal feeds · 6 specialist agents + Orchestrator + Audit Agent collaborating · every figure traced to a deterministic graph path.</div>
+          </div>
+          <div style={{ position: "relative", display: "flex", gap: 12 }}>
+            {[["EES", String(ees)], ["EVaR", `€${evar.toFixed(1)}M`], ["Agents", "8"]].map(([l, v]) => (
+              <div key={l} style={{ background: "rgba(255,255,255,0.08)", border: "1px solid rgba(255,255,255,0.16)", borderRadius: 12, padding: "12px 16px", minWidth: 84, textAlign: "center" }}>
+                <div style={{ fontSize: 9.5, opacity: 0.6, fontWeight: 800, letterSpacing: 0.6, textTransform: "uppercase" }}>{l}</div>
+                <div style={{ fontSize: 24, fontWeight: 900, ...NUM }}>{v}</div>
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
+      </StickyModuleHeader>
 
       <div style={{ display: "grid", gridTemplateColumns: "260px 1.2fr 1fr", gap: 16, marginBottom: 16 }}>
         <Card style={{ padding: 18 }} onClick={() => setScreen("map")}>
@@ -7061,51 +7063,53 @@ export default function FactoryMindDemo() {
 
     return (
       <div style={{ animation: "slideIn .38s ease both" }}>
-        {/* Cinematic scenario header banner */}
-        <div style={{ borderRadius: 14, overflow: "hidden", marginBottom: 14, position: "relative",
-          background: "linear-gradient(120deg,#13082B 0%,#1E0A45 50%,#2D0A55 100%)", boxShadow: "0 16px 44px rgba(70,0,115,0.16)" }}>
-          <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }} xmlns="http://www.w3.org/2000/svg">
-            <style>{`
-              @keyframes srSweep { from { stroke-dashoffset: 120; opacity:.12 } to { stroke-dashoffset: 0; opacity:.34 } }
-              @keyframes srOrb { 0%,100%{ transform:translateY(0) scale(1) } 50%{ transform:translateY(-9px) scale(1.08) } }
-            `}</style>
-            <defs><pattern id="srGrid" width="32" height="32" patternUnits="userSpaceOnUse">
-              <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#fff" strokeWidth="0.3" opacity="0.08" />
-            </pattern></defs>
-            <rect width="100%" height="100%" fill="url(#srGrid)" />
-            <path d="M40 88 C260 20 420 120 640 55 S950 22 1160 80" stroke="#fff" strokeWidth="1.2" fill="none" strokeDasharray="12 18" style={{ animation: "srSweep 1.2s ease-out both" }} />
-            {scenarioAccents.map((ac, i) => (
-              <circle key={i} cx={`${12 + i * 20}%`} cy="50%" r="40" fill={ac} opacity="0.07" style={{ transformOrigin: `${12 + i * 20}% 50%`, animation: `srOrb ${3 + i * 0.35}s ease-in-out infinite` }} />
-            ))}
-          </svg>
-          <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 20, padding: "18px 22px" }}>
-            <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-              <FlaskConical size={20} color={C.core} />
-              <div>
-                <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1.2, color: "rgba(255,255,255,0.5)", textTransform: "uppercase" }}>Scenario Room</div>
-                <div style={{ fontSize: 18, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginTop: 1 }}>
-                  {scenarioTitle}
-                </div>
-                <div style={{ fontSize: 11.5, color: "rgba(255,255,255,0.58)", marginTop: 3 }}>
-                  {activeScenarioCount} scenario{activeScenarioCount === 1 ? "" : "s"} · {scenarioStatus}
+        <StickyModuleHeader>
+          {/* Cinematic scenario header banner */}
+          <div style={{ borderRadius: 14, overflow: "hidden", marginBottom: 14, position: "relative",
+            background: "linear-gradient(120deg,#13082B 0%,#1E0A45 50%,#2D0A55 100%)", boxShadow: "0 16px 44px rgba(70,0,115,0.16)" }}>
+            <svg style={{ position: "absolute", inset: 0, width: "100%", height: "100%", pointerEvents: "none" }} xmlns="http://www.w3.org/2000/svg">
+              <style>{`
+                @keyframes srSweep { from { stroke-dashoffset: 120; opacity:.12 } to { stroke-dashoffset: 0; opacity:.34 } }
+                @keyframes srOrb { 0%,100%{ transform:translateY(0) scale(1) } 50%{ transform:translateY(-9px) scale(1.08) } }
+              `}</style>
+              <defs><pattern id="srGrid" width="32" height="32" patternUnits="userSpaceOnUse">
+                <path d="M 32 0 L 0 0 0 32" fill="none" stroke="#fff" strokeWidth="0.3" opacity="0.08" />
+              </pattern></defs>
+              <rect width="100%" height="100%" fill="url(#srGrid)" />
+              <path d="M40 88 C260 20 420 120 640 55 S950 22 1160 80" stroke="#fff" strokeWidth="1.2" fill="none" strokeDasharray="12 18" style={{ animation: "srSweep 1.2s ease-out both" }} />
+              {scenarioAccents.map((ac, i) => (
+                <circle key={i} cx={`${12 + i * 20}%`} cy="50%" r="40" fill={ac} opacity="0.07" style={{ transformOrigin: `${12 + i * 20}% 50%`, animation: `srOrb ${3 + i * 0.35}s ease-in-out infinite` }} />
+              ))}
+            </svg>
+            <div style={{ position: "relative", display: "flex", alignItems: "center", gap: 20, padding: "18px 22px" }}>
+              <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
+                <FlaskConical size={20} color={C.core} />
+                <div>
+                  <div style={{ fontSize: 11, fontWeight: 700, letterSpacing: 1.2, color: "rgba(255,255,255,0.5)", textTransform: "uppercase" }}>Scenario Room</div>
+                  <div style={{ fontSize: 18, fontWeight: 800, color: "#fff", letterSpacing: -0.5, marginTop: 1 }}>
+                    {scenarioTitle}
+                  </div>
+                  <div style={{ fontSize: 11.5, color: "rgba(255,255,255,0.58)", marginTop: 3 }}>
+                    {activeScenarioCount} scenario{activeScenarioCount === 1 ? "" : "s"} · {scenarioStatus}
+                  </div>
                 </div>
               </div>
+              <div style={{ flex: 1 }} />
+              {[
+                ["Scenario EVaR", `€${sEvar.toFixed(2)}M`, sEvar > K.evar + 0.05 ? C.red : "#fff"],
+                ["Residual EVaR", `€${portfolio.residual.toFixed(2)}M`, scenarioTone],
+                ["Value protected", `€${portfolio.valueProtected.toFixed(2)}M`, portfolio.valueProtected > 0 ? C.green : "rgba(255,255,255,0.55)"],
+                ["Trust", `${portfolio.conf}%`, portfolio.list.length ? C.green : "rgba(255,255,255,0.72)"],
+              ].map(([l, v, c]) => (
+                <div key={l} style={{ textAlign: "center", padding: "0 15px", borderLeft: "1px solid rgba(255,255,255,0.1)" }}>
+                  <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", fontWeight: 600, letterSpacing: 1 }}>{l}</div>
+                  <div style={{ fontSize: 22, fontWeight: 800, color: c, ...NUM, letterSpacing: -0.5 }}>{v}</div>
+                </div>
+              ))}
             </div>
-            <div style={{ flex: 1 }} />
-            {[
-              ["Scenario EVaR", `€${sEvar.toFixed(2)}M`, sEvar > K.evar + 0.05 ? C.red : "#fff"],
-              ["Residual EVaR", `€${portfolio.residual.toFixed(2)}M`, scenarioTone],
-              ["Value protected", `€${portfolio.valueProtected.toFixed(2)}M`, portfolio.valueProtected > 0 ? C.green : "rgba(255,255,255,0.55)"],
-              ["Trust", `${portfolio.conf}%`, portfolio.list.length ? C.green : "rgba(255,255,255,0.72)"],
-            ].map(([l, v, c]) => (
-              <div key={l} style={{ textAlign: "center", padding: "0 15px", borderLeft: "1px solid rgba(255,255,255,0.1)" }}>
-                <div style={{ fontSize: 10, color: "rgba(255,255,255,0.4)", fontWeight: 600, letterSpacing: 1 }}>{l}</div>
-                <div style={{ fontSize: 22, fontWeight: 800, color: c, ...NUM, letterSpacing: -0.5 }}>{v}</div>
-              </div>
-            ))}
           </div>
-        </div>
-        <GradSep />
+          <GradSep />
+        </StickyModuleHeader>
 
         <div style={{ display: "grid", gridTemplateColumns: "280px 1fr", gap: 16 }}>
           <div>
@@ -8294,6 +8298,11 @@ export default function FactoryMindDemo() {
 
   /* ─── Module banner headers ──────────────────────────────────────────────── */
   const GradSep = () => <div style={{ height: 2.5, background: "linear-gradient(90deg,transparent 0%,#A100FF 22%,#5BC4FF 52%,#A100FF 78%,transparent 100%)", opacity: 0.82, borderRadius: 2, marginBottom: 18 }} />;
+  const StickyModuleHeader = ({ children }) => (
+    <div style={{ position: "sticky", top: 0, zIndex: 32, background: C.faint, paddingBottom: 1 }}>
+      {children}
+    </div>
+  );
   const _biTC = { procurement: C.core, production: "#1E7145", logistics: "#0070C0", commercial: "#D41876", finance: "#B86E00", external: "#5B5B72" };
   const _biDom = K.domains.find(d => d.id === biTab);
   const _biAc = _biTC[biTab] || C.core;
@@ -8597,13 +8606,15 @@ export default function FactoryMindDemo() {
         </div>
         <div style={{ flex: 1, minHeight: 0, position: "relative" }}>
           <div style={{ position: "absolute", inset: 0, overflowY: "auto", padding: 20 }}>
-            {screen === "map" && <div style={{ animation: "slideIn .38s ease both" }}><RiskMapHeader /><GradSep /><div style={{ height: "calc(100vh - 220px)" }}><RiskMap /></div></div>}
+            {screen === "map" && <div style={{ animation: "slideIn .38s ease both" }}><StickyModuleHeader><RiskMapHeader /><GradSep /></StickyModuleHeader><div style={{ height: "calc(100vh - 220px)" }}><RiskMap /></div></div>}
             {screen === "scenario" && ScenarioRoom()}
-            {screen === "packet" && <div style={{ animation: "slideIn .38s ease both" }}><PacketHeader /><GradSep />{Packet()}</div>}
+            {screen === "packet" && <div style={{ animation: "slideIn .38s ease both" }}><StickyModuleHeader><PacketHeader /><GradSep /></StickyModuleHeader>{Packet()}</div>}
             {screen === "dhc" && (
               <div style={{ animation: "slideIn .38s ease both" }}>
-                <DHCHeader />
-                <GradSep />
+                <StickyModuleHeader>
+                  <DHCHeader />
+                  <GradSep />
+                </StickyModuleHeader>
                 <EnterpriseGraph onOpenPacket={(label) => {
                   if (label === "Packet #24") openPacketView(24, "monitoring");
                   else if (label === "Packet #25") openPacketView(25, "planning");
@@ -8615,8 +8626,10 @@ export default function FactoryMindDemo() {
             )}
             {screen === "governance" && (
               <div style={{ animation: "slideIn .38s ease both" }}>
-                <GovernanceHeader />
-                <GradSep />
+                <StickyModuleHeader>
+                  <GovernanceHeader />
+                  <GradSep />
+                </StickyModuleHeader>
                 <GovernanceDashboard
                   sEvar={sEvar}
                   sEes={sEes}
@@ -8628,7 +8641,7 @@ export default function FactoryMindDemo() {
               </div>
             )}
             {screen === "control" && ControlCenter()}
-            {screen === "bi" && <div style={{ animation: "slideIn .38s ease both" }}><BIHeader /><GradSep /><BI biTab={biTab} setBiTab={setBiTab} onGenerateReport={() => setScreen("reports")} /></div>}
+            {screen === "bi" && <div style={{ animation: "slideIn .38s ease both" }}><StickyModuleHeader><BIHeader /><GradSep /></StickyModuleHeader><BI biTab={biTab} setBiTab={setBiTab} onGenerateReport={() => setScreen("reports")} /></div>}
             {screen === "reports" && <Reports />}
           </div>
 
