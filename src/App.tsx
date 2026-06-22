@@ -5941,7 +5941,10 @@ function GovernanceDashboard({ sEvar, sEes, portfolio, activeScenarioName, activ
             </div>
 
             {/* BUSINESS IMPACT */}
-            <div style={{ borderRadius: 14, border: "1px solid rgba(232,137,12,0.30)", background: "linear-gradient(180deg,#FFF7EC,#fff)", padding: 16, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
+            <div style={{ position: "relative", borderRadius: 14, border: "1px solid rgba(232,137,12,0.30)", background: "linear-gradient(180deg,#FFF7EC,#fff)", padding: 16, textAlign: "center", display: "flex", flexDirection: "column", alignItems: "center" }}>
+              <span title="Source: CocoaRisk Excel base-case model. Risk avoided = €600k procurement timing + €360k avoided emergency/spot purchases. Cost savings = €400k reduced downtime + €150k planning effort released + €200k commercial opportunities captured. Total annual benefit = €1.71M full run-rate." style={{ position: "absolute", top: 10, right: 10, width: 18, height: 18, borderRadius: 99, border: "1px solid rgba(232,137,12,0.28)", background: "rgba(255,255,255,0.78)", display: "grid", placeItems: "center", cursor: "help", boxShadow: "0 2px 8px rgba(232,137,12,0.10)" }}>
+                <Info size={11} color="#B86B00" />
+              </span>
               <div style={{ width: 46, height: 46, borderRadius: 99, background: "rgba(232,137,12,0.14)", display: "grid", placeItems: "center", marginBottom: 10 }}><ShieldCheck size={20} color="#E8890C" /></div>
               <div style={{ fontSize: 10.5, fontWeight: 800, color: C.soft, letterSpacing: 0.8, marginBottom: 8 }}>BUSINESS IMPACT</div>
               <div style={{ fontSize: 24, fontWeight: 900, color: "#E8890C", ...NUM, lineHeight: 1.05 }}>€960k</div>
