@@ -4358,6 +4358,8 @@ function LivingCausalGraph({ sEvar, portfolio, selectedActions, hoverAction, set
   const activeActionList = visibleActions.filter((a) => previewIds.has(a.id));
   const activeNodes = new Set(activeActionList.flatMap((a) => a.nodes));
   const residualRatio = _clamp(previewPortfolio.residual / Math.max(sEvar, 0.1), 0.12, 1);
+  const fullyMitigated = visibleActions.length > 0 && visibleActions.every((a) => previewIds.has(a.id));
+  const visualResidualRatio = fullyMitigated ? Math.min(residualRatio, 0.24) : residualRatio;
   const evarTween = useTween(previewPortfolio.residual, 850);
   const nodeDefs = [
     { id: "scenario", label: "Selected scenario", x: 54, y: 220, stress: 0.92, sub: "root cause" },
@@ -4368,12 +4370,13 @@ function LivingCausalGraph({ sEvar, portfolio, selectedActions, hoverAction, set
     { id: "logistics", label: "Inbound lane", x: 420, y: 324, stress: 0.58, sub: "lead-time" },
     { id: "commercial", label: "Service risk", x: 648, y: 150, stress: 0.44, sub: "OTIF" },
     { id: "finance", label: "Margin at risk", x: 648, y: 292, stress: 0.68, sub: "working capital" },
-    { id: "evar", label: "Enterprise EVaR", x: 770, y: 220, stress: residualRatio, sub: `€${evarTween.toFixed(2)}M`, big: true },
+    { id: "evar", label: "Enterprise EVaR", x: 770, y: 220, stress: visualResidualRatio, sub: `€${evarTween.toFixed(2)}M`, big: true },
   ].map((n) => ({ ...n, ...(graphCfg.nodes?.[n.id] || {}) }));
   const actionMitigation = (nodeId) => activeActionList.reduce((sum, a) => sum + (a.nodes.includes(nodeId) ? (a.d.evar || 0.06) : 0), 0);
   const stressOf = (n) => {
+    if (fullyMitigated) return n.id === "scenario" ? 0.28 : 0.18;
     if (n.id === "scenario") return n.stress;
-    if (n.id === "evar") return residualRatio;
+    if (n.id === "evar") return visualResidualRatio;
     return _clamp(n.stress - actionMitigation(n.id) * 0.85, 0.12, 0.96);
   };
   const colorOf = (s) => s > 0.62 ? C.red : s > 0.34 ? C.amber : C.green;
@@ -4428,6 +4431,7 @@ function LivingCausalGraph({ sEvar, portfolio, selectedActions, hoverAction, set
   });
   const edgeStyle = (edge) => {
     const [a, b, weight, override] = edge;
+    if (fullyMitigated) return { color: C.green, width: 4.5, opacity: 0.72, dash: "7 8" };
     const sourceStress = stressOf(nodes[a]);
     const targetStress = stressOf(nodes[b]);
     const weakened = activeNodes.has(a) || activeNodes.has(b);
@@ -4448,7 +4452,7 @@ function LivingCausalGraph({ sEvar, portfolio, selectedActions, hoverAction, set
           <div style={{ fontSize: 20, fontWeight: 900, color: previewPortfolio.residual < sEvar ? C.green : C.red, ...NUM }}>
             {previewPortfolio.list.length ? `${previewPortfolio.list.length} action${previewPortfolio.list.length === 1 ? "" : "s"}` : "Unmitigated"}
           </div>
-          <div style={{ fontSize: 11, color: C.soft }}>residual €{evarTween.toFixed(2)}M · path strength {Math.round(residualRatio * 100)}%</div>
+          <div style={{ fontSize: 11, color: C.soft }}>residual €{evarTween.toFixed(2)}M · path strength {Math.round(visualResidualRatio * 100)}%</div>
         </div>
       </div>
       <div style={{ display: "grid", gridTemplateColumns: "minmax(0,1fr) 294px", gap: 0, background: "linear-gradient(180deg,#FFFFFF 0%,#FAFAFA 100%)" }}>
