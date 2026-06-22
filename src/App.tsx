@@ -6767,8 +6767,9 @@ export default function FactoryMindDemo() {
     setEes(K.ees);
     showToast("Live episode started · signals entering agent feed");
 
+    const episodePace = 1.7;
     const schedule = (delay, fn) => {
-      const t = setTimeout(fn, delay);
+      const t = setTimeout(fn, Math.round(delay * episodePace));
       timers.current.push(t);
     };
     const emit = (delay, item) => schedule(delay, () => { pushFeed(item); setSecs(0); });
