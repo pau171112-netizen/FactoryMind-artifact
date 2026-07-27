@@ -1,6 +1,30 @@
-# FactoryMind Artifact
+# FactoryMind - CocoaRisk
 
-Editable React/Vite version of the Claude artifact exported as `remixed-bf184c57.tsx`.
+Live demo: https://factorymind-artifact.vercel.app
+
+FactoryMind is an AI decision-intelligence concept for manufacturing. CocoaRisk is the final portfolio demo: a CFO and Operations Director cockpit for managing cocoa procurement, production constraints, logistics disruption and margin exposure.
+
+## Why it matters
+
+Manufacturing leaders often see risk signals in separate systems: procurement, production, logistics, finance and commercial planning. CocoaRisk brings those signals into one governed decision flow and translates them into Enterprise Value at Risk (EVaR).
+
+## Product highlights
+
+- Executive control center with current EVaR, exposure trend and confidence.
+- Risk map showing how cocoa market signals propagate through recipes, SKUs, production lines and customers.
+- Scenario room for testing price, demand, lead-time, energy, FX and inventory shocks.
+- Decision packet with recommended actions, expected EVaR reduction, cost and policy clauses.
+- Human approval flow with audit-ready reasoning and validation history.
+- Department reports for data freshness, steward validation and governance review.
+
+## Tech stack
+
+- React 19
+- TypeScript
+- Vite
+- Recharts
+- lucide-react
+- Local deterministic calculations and synthetic data
 
 ## Run locally
 
@@ -11,51 +35,6 @@ npm run dev
 
 Open `http://localhost:5173`.
 
-Codex and Claude Code should use the same canonical local URL:
+## Portfolio note
 
-```bash
-npm run dev:codex
-npm run dev:claude
-```
-
-- Canonical local app: `http://localhost:5173`
-- If `5173` is busy, stop the existing server instead of letting Vite move to another port.
-
-## Collaboration workflow
-
-- Treat this folder as the source of truth, not the Claude public artifact.
-- Before asking Codex or Claude Code to edit, run `git status`.
-- Make small commits after meaningful changes.
-- If both tools are editing, have one finish and commit before the other starts.
-- Keep the original artifact export in Git history so regressions are easy to compare.
-
-## Artifact-style versions
-
-This repository uses Git commits and tags as artifact versions.
-
-Useful commands:
-
-```bash
-npm run artifact:status
-npm run artifact:history
-git tag --list "artifact-v*"
-git checkout artifact-v0.1.0
-```
-
-To create a new traceable version after a meaningful change:
-
-```bash
-npm run build
-git status
-git add .
-git commit -m "Describe the artifact change"
-git tag -a artifact-v0.1.1 -m "Artifact v0.1.1"
-git push
-git push origin artifact-v0.1.1
-```
-
-## Key files
-
-- `src/App.tsx`: the exported artifact component.
-- `src/main.tsx`: React entry point.
-- `src/styles.css`: global browser reset.
+This prototype uses mock and synthetic data only. The goal is to demonstrate product strategy, executive UX, scenario modeling, governed AI decision flows and clear enterprise storytelling.
